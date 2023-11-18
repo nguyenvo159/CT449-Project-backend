@@ -55,6 +55,15 @@ class ProductService {
     async findAll() {
         return await this.find({});
     }
+    // Lấy tất cả sản phẩm có category là "Áo"
+    async findShirt() {
+        return await this.find({ category: "Shirt" });
+    }
+
+    // Lấy tất cả sản phẩm có category là "Quần"
+    async findPant() {
+        return await this.find({ category: "Pant" });
+    }
 
     // Cập nhật
     async update(id, payload) {
@@ -66,6 +75,7 @@ class ProductService {
             $set: {
                 name: payload.name,
                 category: payload.category,
+                imgURL: payload.imgURL,
                 price: payload.price,
                 description: payload.description,
             },

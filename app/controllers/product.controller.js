@@ -38,6 +38,30 @@ exports.findAll = async (req, res, next) => {
     return res.send(documents);
 };
 
+exports.findShirt = async (req, res, next) => {
+    try {
+        const productService = new ProductService(MongoDB.client);
+        const shirts = await productService.findShirt();
+        return res.send(shirts);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving shirts")
+        );
+    }
+};
+
+exports.findPant = async (req, res, next) => {
+    try {
+        const productService = new ProductService(MongoDB.client);
+        const pants = await productService.findPant();
+        return res.send(pants);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving pants")
+        );
+    }
+};
+
 exports.findOne = async (req, res, next) => {
     try {
         const productService = new ProductService(MongoDB.client);

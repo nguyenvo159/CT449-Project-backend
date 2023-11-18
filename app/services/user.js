@@ -12,7 +12,7 @@ class UserService {
             email: payload.email,
             password: payload.password,
             isAdmin: payload.isAdmin || false,
-            // Các trường khác của người dùng
+
         };
         // Remove undefined fields
         Object.keys(user).forEach(
@@ -102,6 +102,12 @@ class UserService {
 
         // Xác thực thành công, trả về thông tin người dùng (hoặc token, session, tùy thuộc vào cách bạn xây dựng hệ thống xác thực)
         return user;
+    }
+    async logout(userId, token) {
+        await this.User.updateOne(
+            { _id: ObjectId(userId) },
+            { $pull: { tokens: token } }
+        );
     }
 
 }

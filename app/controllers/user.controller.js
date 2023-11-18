@@ -45,8 +45,11 @@ exports.login = async (req, res, next) => {
 
 exports.getUserProfile = async (req, res, next) => {
     try {
+        // if (!req.user.isAdmin) {
+        //     return res.sendStatus(403); // Tài khoản không có quyền truy cập
+        // }
         const userService = new UserService(MongoDB.client);
-        const user = await userService.findById(req.userId);
+        const user = await userService.findById(req.params.id);
 
         if (!user) {
             return next(new ApiError(404, "User not found"));
@@ -62,6 +65,9 @@ exports.getUserProfile = async (req, res, next) => {
 
 exports.getAllUsers = async (req, res, next) => {
     try {
+        // if (!req.user.isAdmin) {
+        //     return res.sendStatus(403); // Tài khoản không có quyền truy cập
+        // }
         const userService = new UserService(MongoDB.client);
         const users = await userService.findAll();
 
@@ -81,7 +87,10 @@ exports.updateUser = async (req, res, next) => {
         const userService = new UserService(MongoDB.client);
         const updatedUser = await userService.update(userId, updatedUserData);
 
-        // Trả về thông tin người dùng sau khi cập nhật
+        if (!updatedUser) {
+            return next(new ApiError(404, "User not found"));
+        }
+
         return res.send({ user: updatedUser });
     } catch (error) {
         console.error(error);
@@ -93,10 +102,16 @@ exports.deleteUser = async (req, res, next) => {
     const userId = req.params.id;
 
     try {
+        if (!req.user.isAdmin) {
+            return res.sendStatus(403); // Tài khoản không có quyền truy cập
+        }
         const userService = new UserService(MongoDB.client);
         const deletedUser = await userService.delete(userId);
 
-        // Trả về thông báo sau khi xóa người dùng
+        if (!updatedUser) {
+            return next(new ApiError(404, "User not found"));
+        }
+
         return res.send({ message: "User was deleted successfully", deletedUser });
     } catch (error) {
         console.error(error);
@@ -104,5 +119,18 @@ exports.deleteUser = async (req, res, next) => {
     }
 };
 
+exports.logout = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const token = req.headers.authorization;
 
+        const userService = new UserService(MongoDB.client);
+        await userService.logout(user.userId, token);
 
+        return res.send({ message: "Logout successful" });
+    } catch (error) {
+        console.error(error);
+        return next(new ApiError(500, "An error occurred while logging out"));
+    }
+
+};
