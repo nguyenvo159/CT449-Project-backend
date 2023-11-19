@@ -89,6 +89,16 @@ class UserService {
         return result.value;
     }
 
+    async deleteById(id) {
+        const filter = {
+            _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+        };
+
+        const result = await this.User.findOneAndDelete(filter);
+
+        return result.value;
+    }
+
 
 
 

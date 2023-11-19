@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/products", productRouter);
 app.use("/api/auth", userRouter);
-app.use("/cart", cartRouter);
+app.use("/api/cart", cartRouter);
 
 app.use((req, res, next) => {
     // Code ở đây sẽ chạy khi không có route được định nghĩa nào

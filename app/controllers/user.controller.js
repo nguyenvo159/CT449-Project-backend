@@ -87,10 +87,6 @@ exports.updateUser = async (req, res, next) => {
         const userService = new UserService(MongoDB.client);
         const updatedUser = await userService.update(userId, updatedUserData);
 
-        if (!updatedUser) {
-            return next(new ApiError(404, "User not found"));
-        }
-
         return res.send({ user: updatedUser });
     } catch (error) {
         console.error(error);
@@ -102,15 +98,9 @@ exports.deleteUser = async (req, res, next) => {
     const userId = req.params.id;
 
     try {
-        if (!req.user.isAdmin) {
-            return res.sendStatus(403); // Tài khoản không có quyền truy cập
-        }
         const userService = new UserService(MongoDB.client);
-        const deletedUser = await userService.delete(userId);
+        const deletedUser = await userService.deleteById(userId);
 
-        if (!updatedUser) {
-            return next(new ApiError(404, "User not found"));
-        }
 
         return res.send({ message: "User was deleted successfully", deletedUser });
     } catch (error) {
