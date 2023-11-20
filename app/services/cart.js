@@ -52,7 +52,7 @@ class CartService {
         const cart = await this.Cart.findOne(filter);
 
         if (cart) {
-            // Điền thông tin sản phẩm trong giỏ hàng
+
             const populatedCart = await this.populateCart(cart);
             return populatedCart;
         }
@@ -69,7 +69,7 @@ class CartService {
             ...cart,
             items: cart.items.map(item => ({
                 ...item,
-                product: products.find(product => product._id.equals(item.productId))
+                product: products.find(product => product._id.toString() === item.productId.toString())
             }))
         };
 
