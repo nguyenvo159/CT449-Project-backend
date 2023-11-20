@@ -12,6 +12,8 @@ exports.addToCart = async (req, res, next) => {
         res.json(result);
     } catch (error) {
         console.error(error);
+        // Thêm dòng dưới để in ra chi tiết lỗi
+        console.error("Error in addToCart:", error.message);
         next(new ApiError(500, 'An error occurred while adding to the cart'));
     }
 };
