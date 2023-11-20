@@ -2,6 +2,8 @@ const express = require("express");
 const productRouter = require("./app/routes/product.route");
 const userRouter = require("./app/routes/user.route");
 const cartRouter = require("./app/routes/cart.route");
+const orderRouter = require("./app/routes/order.route");
+
 
 const cors = require("cors");
 
@@ -17,6 +19,8 @@ app.get("/", (req, res) => {
 app.use("/api/products", productRouter);
 app.use("/api/auth", userRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
+
 
 app.use((req, res, next) => {
     // Code ở đây sẽ chạy khi không có route được định nghĩa nào
