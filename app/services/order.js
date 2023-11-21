@@ -20,7 +20,6 @@ class OrderService {
             name: name,
             phone: phone,
             totalMoney: totalMoney,
-            // Các thông tin khác về đơn hàng có thể được thêm vào ở đây
         };
 
         const result = await this.Order.insertOne(order);
@@ -53,6 +52,16 @@ class OrderService {
             userId: ObjectId.isValid(userId) ? new ObjectId(userId) : null,
             _id: ObjectId.isValid(orderId) ? new ObjectId(orderId) : null
         };
+
+        const result = await this.Order.findOneAndDelete(filter);
+        return result.value;
+    }
+    async deleteOrderById(orderId) {
+        if (!ObjectId.isValid(orderId)) {
+            throw new Error("Invalid orderId");
+        }
+
+        const filter = { _id: new ObjectId(orderId) };
 
         const result = await this.Order.findOneAndDelete(filter);
         return result.value;
